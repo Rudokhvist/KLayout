@@ -1,6 +1,6 @@
 /*----------------------------------------- 
-BEEPER1.C -- Timer Demo Program No. 1 
-(c) Charles Petzold, 1996 
+KLayout -- simple keyboard layout indicator
+(c) Ryzhehvost, 2014 
 -----------------------------------------*/ 
 
 
@@ -109,7 +109,7 @@ MenuItem->hSubMenu=NULL;
 MenuItem->hbmpChecked=NULL;
 MenuItem->hbmpUnchecked=NULL;
 MenuItem->dwItemData=NULL;
-MenuItem->dwTypeData=L"Свойства";
+MenuItem->dwTypeData=L"Г‘ГўГ®Г©Г±ГІГўГ ";
 MenuItem->cch=(int)wcslen(MenuItem->dwTypeData);
 MenuItem->hbmpItem=NULL;
 InsertMenuItem(Serv_Menu,0,true,MenuItem);
@@ -161,11 +161,11 @@ RECT rc;
 			CharUpperBuff(LangShort,1);
 
 		if (!mdc) 				 
-			mdc=GetDC(NULL);//Получаем один раз при запуске. Больше не отпускаем.
-							//Это по-идее должно решить проблемы при запущеных играх 
-							//с хитрым режимом экрана
-							//и создать новые, интересные проблемы!
-							//(например, при переключении режима вручную)
+			mdc=GetDC(NULL);//ГЏГ®Г«ГіГ·Г ГҐГ¬ Г®Г¤ГЁГ­ Г°Г Г§ ГЇГ°ГЁ Г§Г ГЇГіГ±ГЄГҐ. ГЃГ®Г«ГјГёГҐ Г­ГҐ Г®ГІГЇГіГ±ГЄГ ГҐГ¬.
+							//ГќГІГ® ГЇГ®-ГЁГ¤ГҐГҐ Г¤Г®Г«Г¦Г­Г® Г°ГҐГёГЁГІГј ГЇГ°Г®ГЎГ«ГҐГ¬Г» ГЇГ°ГЁ Г§Г ГЇГіГ№ГҐГ­Г»Гµ ГЁГЈГ°Г Гµ 
+							//Г± ГµГЁГІГ°Г»Г¬ Г°ГҐГ¦ГЁГ¬Г®Г¬ ГЅГЄГ°Г Г­Г 
+							//ГЁ Г±Г®Г§Г¤Г ГІГј Г­Г®ГўГ»ГҐ, ГЁГ­ГІГҐГ°ГҐГ±Г­Г»ГҐ ГЇГ°Г®ГЎГ«ГҐГ¬Г»!
+							//(Г­Г ГЇГ°ГЁГ¬ГҐГ°, ГЇГ°ГЁ ГЇГҐГ°ГҐГЄГ«ГѕГ·ГҐГ­ГЁГЁ Г°ГҐГ¦ГЁГ¬Г  ГўГ°ГіГ·Г­ГіГѕ)
 		bdc=CreateCompatibleDC(mdc);
 		//ReleaseDC(NULL,mdc);
 		lf.lfHeight = -MulDiv(7, GetDeviceCaps(bdc, LOGPIXELSY), 72);
@@ -258,14 +258,14 @@ switch(iMsg)
 		framecount++;
 		if (framecount==DECIMATE) {
 		framecount=0;
-		if (fFlipFlop) {//Если иконка уже устанавливалась - проверяем её положение
+		if (fFlipFlop) {//Г…Г±Г«ГЁ ГЁГЄГ®Г­ГЄГ  ГіГ¦ГҐ ГіГ±ГІГ Г­Г ГўГ«ГЁГўГ Г«Г Г±Гј - ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ГҐВё ГЇГ®Г«Г®Г¦ГҐГ­ГЁГҐ
 		TrayNotifyHandle = FindWindow(L"Shell_TrayWnd", NULL);
 		if (TrayNotifyHandle) {
 			TrayNotifyHandle = FindWindowEx(TrayNotifyHandle, 0, L"TrayNotifyWnd", NULL);
 			if (TrayNotifyHandle) {
 				OSDependence = FindWindowEx(TrayNotifyHandle, 0, L"SysPager", NULL);
 				if (!OSDependence) {
-					// в W2K SysPager отсутствует
+					// Гў W2K SysPager Г®ГІГ±ГіГІГ±ГІГўГіГҐГІ
 					OSDependence = TrayNotifyHandle;
 				}
 				FSysTrayHandle = FindWindowEx(OSDependence, 0, L"ToolbarWindow32", NULL);
@@ -273,7 +273,7 @@ switch(iMsg)
 		}
 		count=(int)SendMessage(FSysTrayHandle, TB_BUTTONCOUNT,0, 0);
 		pos=-1;
-		//Дальше идёт грязный хак, чтобы узнать, на каком месте наша иконка.
+		//Г„Г Г«ГјГёГҐ ГЁГ¤ВёГІ ГЈГ°ГїГ§Г­Г»Г© ГµГ ГЄ, Г·ГІГ®ГЎГ» ГіГ§Г­Г ГІГј, Г­Г  ГЄГ ГЄГ®Г¬ Г¬ГҐГ±ГІГҐ Г­Г ГёГ  ГЁГЄГ®Г­ГЄГ .
 		GetWindowThreadProcessId(FSysTrayHandle, &dwTrayProcessID);
 		hTrayProc = OpenProcess(PROCESS_ALL_ACCESS, 0, dwTrayProcessID);
 		if (hTrayProc){
@@ -287,7 +287,7 @@ switch(iMsg)
 				mtbbi.dwMask=TBIF_BYINDEX|TBIF_LPARAM;	
 				if (WriteProcessMemory(hTrayProc,lpData,&mtbbi,sizeof(TBBUTTONINFO64),&dwBytesRead)) {
 					if (SendMessage(FSysTrayHandle, TB_GETBUTTONINFO, i, (LPARAM)lpData)>=0) {
-					// Читаем данные из другого процесса
+					// Г—ГЁГІГ ГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЁГ§ Г¤Г°ГіГЈГ®ГЈГ® ГЇГ°Г®Г¶ГҐГ±Г±Г 
 						if (ReadProcessMemory(hTrayProc, lpData, &mtbbi, sizeof(TBBUTTONINFO64), &dwBytesRead)) {
 							icoData=NULL;
 							if (is64bit) {
@@ -301,7 +301,7 @@ switch(iMsg)
 							}
 							if (icoData && ReadProcessMemory(hTrayProc, icoData/*(LPCVOID)mtbbi.lParam*/,&pico,sizeof(TNPRIVICON),&dwBytesRead)) {
 								if ((pico.hWnd!=0)&&(pico.hWnd==myhwnd)) {
-									//это наше окно.
+									//ГЅГІГ® Г­Г ГёГҐ Г®ГЄГ­Г®.
 									pos=i;									
 									break;
 								}
@@ -315,7 +315,7 @@ switch(iMsg)
 			} //else throw std::exception("lpData");//if (lpData)
 		} //else throw std::exception("hTrayProc");//if (hTrayProc)
 		if ((pos<0)||(pos>prev_pos))	{
-			//Первые не мы - точно надо перерисовать.
+			//ГЏГҐГ°ГўГ»ГҐ Г­ГҐ Г¬Г» - ГІГ®Г·Г­Г® Г­Г Г¤Г® ГЇГҐГ°ГҐГ°ГЁГ±Г®ГўГ ГІГј.
 			fFlipFlop=FALSE;
 			Shell_NotifyIcon(NIM_DELETE, &nid);
 			}
@@ -340,8 +340,8 @@ switch(iMsg)
 		DeleteObject(LangBitmap);
 		memset(&nid, 0, sizeof(nid)); 
 		nid.cbSize = sizeof(nid);
-		nid.hWnd = hwnd; // хэндл имеющегося окна 
-		nid.uID = 1234; // некоторый номер (иконки, относящиеся к данному окну, должны различаться по номерам)
+		nid.hWnd = hwnd; // ГµГЅГ­Г¤Г« ГЁГ¬ГҐГѕГ№ГҐГЈГ®Г±Гї Г®ГЄГ­Г  
+		nid.uID = 1234; // Г­ГҐГЄГ®ГІГ®Г°Г»Г© Г­Г®Г¬ГҐГ° (ГЁГЄГ®Г­ГЄГЁ, Г®ГІГ­Г®Г±ГїГ№ГЁГҐГ±Гї ГЄ Г¤Г Г­Г­Г®Г¬Гі Г®ГЄГ­Гі, Г¤Г®Г«Г¦Г­Г» Г°Г Г§Г«ГЁГ·Г ГІГјГ±Гї ГЇГ® Г­Г®Г¬ГҐГ°Г Г¬)
 		nid.hIcon=TrayIcon;
 		nid.uCallbackMessage = WM_ShellNote;
 		StringCchCopyW(nid.szTip,sizeof(nid.szTip)/sizeof(nid.szTip[0]),LangLong);
